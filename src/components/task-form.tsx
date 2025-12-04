@@ -18,7 +18,6 @@ interface TaskFormProps {
 export function TaskForm({ task, onSuccess }: TaskFormProps) {
   const { addTask, updateTask, tasks } = useTasksStore();
   const [loading, setLoading] = useState(false);
-  const [showCustomCategory, setShowCustomCategory] = useState(false);
   
   // Map 'todo' status to 'pending' for the form
   const getFormStatus = (status?: string) => {
@@ -35,13 +34,10 @@ export function TaskForm({ task, onSuccess }: TaskFormProps) {
   const [formData, setFormData] = useState({
     title: task?.title || '',
     description: task?.description || '',
-    category: task?.category || '',
     status: getFormStatus(task?.status) as 'pending' | 'in-progress' | 'completed',
     priority: task?.priority || 'medium' as const,
     dueDate: getDueDate()
   });
-  
-  const existingCategories = Array.from(new Set(tasks.map(t => t.category).filter(Boolean)));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,10 +45,6 @@ export function TaskForm({ task, onSuccess }: TaskFormProps) {
     // Frontend validation
     if (!formData.title.trim()) {
       toast.error('Title is required');
-      return;
-    }
-    if (!formData.category.trim()) {
-      toast.error('Category is required');
       return;
     }
     if (!formData.dueDate) {
@@ -74,7 +66,6 @@ export function TaskForm({ task, onSuccess }: TaskFormProps) {
       const taskData = {
         ...formData,
         title: formData.title.trim(),
-        category: formData.category.trim(),
         dueDate: formData.dueDate || undefined
       };
 
@@ -113,44 +104,6 @@ export function TaskForm({ task, onSuccess }: TaskFormProps) {
           maxLength={1000}
           rows={4}
         />
-      </div>
-      
-      <div className="flex gap-2">
-        <Select 
-          value={showCustomCategory ? 'custom' : (formData.category || 'none')} 
-          onValueChange={(value) => {
-            if (value === 'custom') {
-              setShowCustomCategory(true);
-              setFormData(prev => ({ ...prev, category: '' }));
-            } else if (value === 'none') {
-              setShowCustomCategory(false);
-              setFormData(prev => ({ ...prev, category: '' }));
-            } else {
-              setShowCustomCategory(false);
-              setFormData(prev => ({ ...prev, category: value }));
-            }
-          }}
-        >
-          <SelectTrigger className={showCustomCategory ? 'w-[180px]' : 'w-full'}>
-            <SelectValue placeholder="Category *" />
-          </SelectTrigger>
-          <SelectContent className="max-h-[200px]">
-            <SelectItem value="custom">+ New Category</SelectItem>
-            {existingCategories.map(cat => (
-              <SelectItem key={cat} value={cat!}>{cat}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {showCustomCategory && (
-          <Input
-            placeholder="Enter new category"
-            value={formData.category}
-            onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-            maxLength={100}
-            className="flex-1"
-            autoFocus
-          />
-        )}
       </div>
 
       <div className="grid grid-cols-3 gap-3">
