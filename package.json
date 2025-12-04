@@ -13,7 +13,6 @@
     "lint:fix-unsafe": "biome check . --write --unsafe"
   },
   "dependencies": {
-
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -50,14 +49,13 @@
     "date-fns": "4.1.0",
     "dotenv": "^17.2.3",
     "embla-carousel-react": "8.5.1",
-
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "next": "16.0.3",
+    "next": "16.0.7",
     "next-themes": "^0.4.6",
-    "react": "19.2.0",
+    "react": "19.2.1",
     "react-day-picker": "9.11.1",
-    "react-dom": "19.2.0",
+    "react-dom": "19.2.1",
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.4",
